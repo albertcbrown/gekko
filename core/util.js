@@ -16,6 +16,7 @@ var _gekkoEnv = false;
 
 var _args = false;
 
+
 // helper functions
 var util = {
   getConfig: function() {
@@ -34,7 +35,18 @@ var util = {
   },
   // overwrite the whole config
   setConfig: function(config) {
-    _config = config;
+   if (!_config) {
+    if(!program.config)
+        util.die('Please specify a config file.', true);
+
+    if(!fs.existsSync(util.dirs().gekko + program.config))
+      util.die('Cannot find the specified config file.', true);
+
+    _config = require(util.dirs().gekko + program.config);
+    _config = _.merge(_config, config);
+   }
+   // never overwrite
+    _config = _.merge(_config, config);
   },
   setConfigProperty: function(parent, key, value) {
     if(parent)
@@ -186,7 +198,7 @@ var util = {
 // in stand alone mode
 program
   .version(util.logVersion())
-  .option('-c, --config <file>', 'Config file')
+  .option('-c, --config <file>', 'Config file', 'config.js')
   .option('-b, --backtest', 'backtesting mode')
   .option('-i, --import', 'importer mode')
   .option('--ui', 'launch a web UI')
