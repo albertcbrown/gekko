@@ -6,17 +6,16 @@
 const CONFIG = {
   headless: false,
   api: {
-    host: '0.0.0.0',
+    host: '127.0.0.1',
     port: 3000,
-    timeout: 120000 // 2 minutes
   },
   ui: {
     ssl: false,
-    host: '192.168.0.180',
+    host: 'localhost',
     port: 3000,
     path: '/'
   },
-  adapter: 'postgresql'
+  adapter: 'sqlite'
 }
 
 if(typeof window === 'undefined')
